@@ -1,36 +1,47 @@
 import { useState } from "react";
 import "./styles.css";
+import TodoForm from "./TodoForm.jsx";
+import TodoItem from "./TodoItem";
 
 export default function App() {
-  const [newItem, setNewItem] = useState("")
-  
+  const [todos, setTodos] = useState([]);
+
+  function addTodo(newTodo) {
+    setTodos((currentTodos) => {
+      return [...currentTodos, newTodo];
+    });
+  }
+
+  function toggleTodos(id, completed) {
+    setTodos((currentTodos) => {
+      return currentTodos.map((todo) => {
+        if (todo.id === id) {
+          return { ...todo, completed };
+        }
+        return todo;
+      });
+    });
+  }
+
+  function deleteTodo(id) {
+    setTodos((currentTodos) => {
+      return currentTodos.filter((todo) => todo.id !== id);
+    });
+  }
 
   return (
     <>
-      <form className="new-item-form">
-        <div className="form-row">
-          <label htmlFor="Item">New Item</label>
-          <input value ={newItem} onChange={e => setNewItem(e.target.value)} type = "text" id="Item" />
-          <input type="text" id="Item" />
-        </div>
-        <button className="btn">Add</button>
-      </form>
+      <TodoForm onAdd={addTodo} />
       <h1 className="header">Todo List</h1>
       <ul className="list">
-        <li>
-          <label>
-            <input type="checkbox" />
-            Item 1
-          </label>
-          <button className="btn remove">Remove</button>
-        </li>
-        <li>
-          <label>
-            <input type="checkbox" />
-            Item 2
-          </label>
-          <button className="btn remove">Remove</button>
-        </li>
+        {todos.map((todo) => (
+          <TodoItem
+            key={todo.id}
+            todo={todo}
+            onToggle={toggleTodos}
+            onDelete={deleteTodo}
+          />
+        ))}
       </ul>
     </>
   );
