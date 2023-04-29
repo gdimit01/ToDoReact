@@ -1,7 +1,10 @@
+import "./styles.css";
+
 export default function App() {
-  return (
-    <div>
-      <h1>Hello World</h1>
+  return <form className="new-item-form">
+    <div className = "form-row">
+      <label htmlFor = "Item">New Item</label>
+      <input type = "text" id = "Item" />
     </div>
-  )
+  </form>
 }
